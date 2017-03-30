@@ -99,7 +99,7 @@ p.a-right{
   align-items: center;
 }
 .list-entry img{
-	width: 19%;
+	width: 17%;
 	opacity: .7;
 }
 .list-entry p{
@@ -129,6 +129,15 @@ footer p{
 	color: #615547;
 }
 
+/*Add Input*/
+input{
+	font-family:  DenseRegular;
+	font-size: 1.5em;
+	border-width: 0 0 1px 0;
+	border-color: rgba(0, 0, 0, .3);
+}
+
+/*Leftover*/
 .fDenseR{
 	/* .list-entries | footer p */
 	font-family: DenseRegular;
