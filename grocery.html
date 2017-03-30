@@ -15,24 +15,33 @@
 		</div>
 	</div>
 	<div id='list-part'>
-		<div id='list-entries' class="fDenseR">
-		
-		<grocery-list-entry v-for="item in groceryList" v-bind:key="item.id" v-bind:properties="item"></grocery-list-entry>
-		</div>
 
+		<ul id='list-entries' class="fDenseR">
+			<li is="grocery-list-entry" v-for="(entry, i) in groceryList" v-bind:i="i" v-bind:key="entry.id" v-bind:entry="entry" v-bind:imgsrc="whichSrc(entry.done)" v-on:switch="switchState(entry)" v-on:delete="deleteEntry(entry)"></li>
+		</ul>
+		
 		<footer>
 			<p class="smaller fDenseR">Total items {{gListLength}}</p>
 			<button v-on:click="addItemToGrocery" id="addButton"></button>
-			<div style="float:right;"><input v-model="agitem"  v-on:keyup.enter='addItemToGrocery' maxlength="30" v-bind:placeholder="addPlaceholder"></div>
+			<div class="f-right">
+				<input v-model="agitem"  v-on:keyup.enter='addItemToGrocery' maxlength="30" v-bind:placeholder="addPlaceholder">
+			</div>
 		</footer>
+
 	</div>
 </div>
 
 <script src="https://unpkg.com/vue"></script>
 <script>
 	var groceryListEntry = 	{
-		props: ['properties'],
-		template: "<div class='list-entry'><img id='checkImg' src='graphics/togo.png' /><p>{{properties.item}}</p></div><hr style='margin: 0 auto; opacity: .3; max-width: 90%;' />"
+		props: ['entry', 'imgsrc'],
+		template: `
+			<li class="list-entry" v-bind:class="{checked : entry.done}">
+				<img class='checkImg' v-on:click="$emit('switch')" v-bind:src='imgsrc'/>
+				<img class='deleteImg trans' src='graphics/bin.png' v-on:click="$emit('delete')" />
+				<p>{{entry.item}}</p>
+			</li>
+		`
 	};
 
 	var lp = new Vue({
@@ -45,6 +54,23 @@
 			groceryList: []
 		},
 		methods:{
+			switchState: function(entry){
+				entry.done = !entry.done;
+				this.updateSizes();
+			},
+			deleteEntry: function(entry){
+				var index = this.groceryList.indexOf(entry);
+				if( index !== -1){
+					this.groceryList.splice(index, 1);
+				}
+			},
+			whichSrc: function(done){
+				if(done){
+					return 'graphics/done.png'
+				}else{
+					return 'graphics/togo.png'
+				}
+			},
 			addItemToGrocery: function(){
 				if(this.agitem === ''){
 					this.addPlaceholder = 'Write something here.';
