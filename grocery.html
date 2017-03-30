@@ -10,42 +10,81 @@
 	<div id='info-part'>
 		<div id='left-info-part' class="nFontSize"><p>Grocery list</p></div>
 		<div id='right-info-part'>
-			<div id='list-info-togo'> <p class="a-right">3</p> <p class="smaller">ToGo</p> </div>
-			<div id='list-info-done'> <p class="a-right">0</p> <p class="smaller">Done</p> </div>
+			<div id='list-info-togo'> <p class="a-right">{{togo}}</p> <p class="smaller">ToGo</p> </div>
+			<div id='list-info-done'> <p class="a-right">{{done}}</p> <p class="smaller">Done</p> </div>
 		</div>
 	</div>
 	<div id='list-part'>
 		<div id='list-entries' class="fDenseR">
-			
-			<div class="list-entry">
-				<img id='checkImg' src="graphics/togo.png" />
-				<p>3 x Vanilla Milks</p>
-			</div>
-			<hr style="margin: 0 auto; opacity: .3; max-width: 90%;" />
-
-			<div class="list-entry">
-				<img id='checkImg' src="graphics/togo.png" />
-				<p>Peanut Butter</p>
-			</div>
-			<hr style="margin: 0 auto; opacity: .3; max-width: 90%;" />
-
-			<div class="list-entry">
-				<img id='checkImg' src="graphics/togo.png" />
-				<p>6 pack Coca Cola</p>
-			</div>
-			<hr style="margin: 0 auto; opacity: .3; max-width: 90%;" />
-
+		
+		<grocery-list-entry v-for="item in groceryList" v-bind:key="item.id" v-bind:properties="item"></grocery-list-entry>
 		</div>
 
 		<footer>
-			<p class="smaller fDenseR">Completed 0</p>
-			<button id="addButton"></button>
-			<div style="float:right;"><input maxlength="30" placeholder="Name item to add."></div>
+			<p class="smaller fDenseR">Total items {{gListLength}}</p>
+			<button v-on:click="addItemToGrocery" id="addButton"></button>
+			<div style="float:right;"><input v-model="agitem"  v-on:keyup.enter='addItemToGrocery' maxlength="30" v-bind:placeholder="addPlaceholder"></div>
 		</footer>
 	</div>
 </div>
 
 <script src="https://unpkg.com/vue"></script>
-<script></script>
+<script>
+	var groceryListEntry = 	{
+		props: ['properties'],
+		template: "<div class='list-entry'><img id='checkImg' src='graphics/togo.png' /><p>{{properties.item}}</p></div><hr style='margin: 0 auto; opacity: .3; max-width: 90%;' />"
+	};
+
+	var lp = new Vue({
+		el: '#list-part',
+		data: {
+			id: 0,
+			agitem: '',
+			addPlaceholder: 'Name item to add.',
+			gListLength: 0,
+			groceryList: []
+		},
+		methods:{
+			addItemToGrocery: function(){
+				if(this.agitem === ''){
+					this.addPlaceholder = 'Write something here.';
+				}else{
+					this.groceryList.push({id: this.id, item: this.agitem, done: false});
+					this.id++;
+					this.agitem = '';
+					this.addPlaceholder = 'Name item to add.';
+					this.updateSizes();
+				}
+			},
+			updateSizes: function(){
+				this.gListLength = this.groceryList.length;
+
+				var done = 0, togo = 0;
+
+				this.groceryList.forEach(function(item){
+					if(item.done === true){
+						done++;
+					}else{
+						togo++;
+					}
+				});
+
+				rip.togo = togo;
+				rip.done = done;
+				}
+		},
+		components: {
+			'grocery-list-entry': groceryListEntry
+		}
+	});
+
+	var rip = new Vue({
+		el: '#right-info-part',
+		data: {
+			togo: 0,
+			done: 0
+		}
+	});
+</script>
 </body>
 </html>
