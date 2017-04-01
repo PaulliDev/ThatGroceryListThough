@@ -1,0 +1,244 @@
+*{padding: 0; margin:0;}
+ul{list-style-type:none;}
+
+html, body {
+	height: 100%;
+	overflow: auto;
+}
+
+body{
+	background-color: #3e2824;
+}
+
+/*Fonts declaration*/
+@font-face {
+    font-family: BebasNeueR;
+    src: url('../graphics/BebasNeueRegular.otf');
+}
+@font-face {
+    font-family: BebasNeueL;
+    src: url('../graphics/BebasNeueLight.otf');
+}
+@font-face {
+    font-family: DenseRegular;
+    src: url('../graphics/Dense-Regular.woff2');
+}
+
+/*Container*/
+#grocery-list{
+	margin: 5% auto;
+	width: 20%;
+	height: 75%;
+	box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+/*Top part*/
+#info-part{
+	width: 100%;
+	height: 35%;
+	background-image: url('../graphics/background.jpg');
+	background-size: cover;
+	overflow: hidden;
+	position: relative;
+}
+#left-info-part{
+	bottom: 0;
+	width: 55%;
+	position: absolute;
+}
+#left-info-part	p{
+	padding: 0 4%;
+	color: white;
+	font-family: BebasNeueR;
+	font-size: 2.5em;
+}
+#right-info-part{
+	width: 45%;
+	height: 100%;
+	float: right;
+	background-color: rgba(0, 0, 0, 0.6);
+	display: flex;
+	/*xy*/
+	justify-content: center;
+	align-items: center;
+}
+#list-info-togo, #list-info-done{
+	padding: 0 5%;
+}
+#right-info-part p{
+	color: white;
+	font-family:BebasNeueL;
+}
+#list-info-togo	p, #list-info-done p{
+	font-size: 3em;
+	opacity: .9;
+}
+p.smaller{
+	font-size: 1.5em !important;
+	opacity: .5 !important;
+}
+p.a-right{
+	text-align: right;
+}
+
+/*Bottom part*/
+#list-part{
+	width: 100%;
+	height: 65%;
+	background-color: white;
+}
+#list-entries{
+	width: 100%;
+	height: 90%;
+	overflow: auto;
+}
+/*Bottom-List entry*/
+.checkImg{
+	width: 17%;
+}
+.checkImg:hover{
+	content: url('../graphics/done.png');
+}
+.checked{
+	background-color: rgba(46, 204, 113, .4);
+
+	-webkit-transition: all .5s ease-in;
+     -moz-transition: all .5s ease-in;
+       -o-transition: all .5s ease-in;
+  				transition: all .5s ease-in;
+}
+.deleteImg{
+	width: 5%;
+	left: 12%;
+	top: 65%;
+	opacity: .1;
+	position: absolute;
+}
+.deleteImg:hover{
+	opacity: 1;
+	-webkit-transition: all .1s ease-in;
+     -moz-transition: all .1s ease-in;
+       -o-transition: all .1s ease-in;
+  				transition: all .1s ease-in;
+}
+
+.list-entry{
+	width: 100%;
+	height: 17%;
+	position: relative;
+  display: flex;
+  align-items: center;
+	border: dashed rgba(0, 0, 0, .2);
+	border-width: 0 0 1px 0;
+
+	-webkit-transition: all .5s ease-in;
+     -moz-transition: all .5s ease-in;
+       -o-transition: all .5s ease-in;
+					transition: all .5s ease-in;
+}
+.list-entry img{
+	cursor: pointer;
+}
+.list-entry p{
+	font-size: 2em;
+}
+
+/*Footer*/
+#list-part footer{
+	width: 100%;
+	height: 10%;
+	position: relative;
+}
+#addButton{
+	position: relative;
+	top: -100%;
+	right: 3%;
+	width: 55px;
+	height: 55px;
+	background: url('../graphics/add.png');
+	float: right;
+	border-width: 0;
+	cursor: pointer;
+	background-size: contain;
+	background-repeat: no-repeat;
+}
+#shareButton{
+	position: absolute;
+	top: 1%;
+	right: 1%;
+	width: 40px;
+	height: 40px;
+	background: url('../graphics/share.png');
+	border-width: 0;
+	cursor: pointer;
+	background-size: contain;
+	background-repeat: no-repeat;
+	opacity: .4;
+	-webkit-transition: all .3s ease-in;
+     -moz-transition: all .3s ease-in;
+       -o-transition: all .3s ease-in;
+					transition: all .3s ease-in;
+}
+#shareButton:hover{
+	opacity: 1;
+	-webkit-transition: all .3s ease-in;
+     -moz-transition: all .3s ease-in;
+       -o-transition: all .3s ease-in;
+					transition: all .3s ease-in;
+}
+footer p{
+	padding: 0 3%;
+	float: left;
+	color: #615547;
+}
+
+/*Style Input*/
+.list-entry input{
+	text-align: left;
+	font-family:  DenseRegular;
+	width: 100%;
+	font-size: 2em;
+	border-width: 0;
+	background-color: transparent;
+}
+
+footer input{
+	font-family:  DenseRegular;
+	font-size: 1.5em;
+	border-width: 0 0 1px 0;
+	border-color: rgba(0, 0, 0, .3);
+}
+
+/*Leftover*/
+.fDenseR{
+	font-family: DenseRegular;
+}
+.f-right{
+	float: right;
+}
+
+/*Media Queries*/
+@media screen and (max-width: 1680px){
+	#grocery-list{
+		width: 25%;
+	}
+}
+
+@media screen and (max-width: 1300px){
+	#grocery-list{
+		width: 30%;
+	}
+}
+
+@media screen and (max-width: 1100px){
+	#grocery-list{
+		width: 40%;
+	}
+}
+
+@media screen and (max-width: 800px){
+	#grocery-list{
+		width: 100%;
+		height: 100%;
+	}
+}
