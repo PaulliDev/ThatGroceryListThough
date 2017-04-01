@@ -1,18 +1,18 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>BeepRoger-Grocery List</title>
-	<link href="style.css" rel="stylesheet"/>
+	<link href="css/app.css" rel="stylesheet"/>
 </head>
 <body>
 
 <div id='grocery-list'>
 	<div id='info-part'>
+		<button id="shareButton" @click="copyURLtoClip"></button>
 		<div id='left-info-part' class="nFontSize"><p>Grocery list</p></div>
 		<div id='right-info-part'>
-			<div id='list-info-togo'> <p class="a-right">{{togo}}</p> <p class="smaller">ToGo</p> </div>
-			<div id='list-info-done'> <p class="a-right">{{done}}</p> <p class="smaller">Done</p> </div>
+			<div id='list-info-togo'> <p class="a-right">@{{togo}}</p> <p class="smaller">ToGo</p> </div>
+			<div id='list-info-done'> <p class="a-right">@{{done}}</p> <p class="smaller">Done</p> </div>
 		</div>
 	</div>
 	<div id='list-part'>
@@ -22,98 +22,151 @@
 		</ul>
 		
 		<footer>
-			<p class="smaller fDenseR">Total items {{gListLength}}</p>
-			<button @click="addItemToGrocery" id="addButton"></button>
-			<div class="f-right">
-				<input v-model="agitem"  @keyup.enter='addItemToGrocery' maxlength="30" :placeholder="addPlaceholder">
-			</div>
+			<p class="smaller fDenseR">Total items @{{gListLength}}</p>
+			<button id="addButton" @click="addItemToGrocery"></button>
+			<input class="f-right" v-model="agitem"  @keyup.enter="addItemToGrocery" maxlength="30" :placeholder="addPlaceholder">
 		</footer>
 
 	</div>
 </div>
 
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 <script src="https://unpkg.com/vue"></script>
 <script>
 	var groceryListEntry = 	{
-		props: ['entry', 'imgsrc'],
-		template: `
-			<li class="list-entry" :class="{checked : entry.done}">
-				<img class='checkImg' @click="$emit('switch')" :src='imgsrc'/>
-				<img class='deleteImg trans' src='graphics/bin.png' @click="$emit('delete')" />
-				<p>{{entry.item}}</p>
-			</li>
-		`
-	};
+	props: ['entry', 'imgsrc'],
+	template: `
+		<li class="list-entry" :class="{checked : entry.done}">
+			<img class='checkImg' @click="$emit('switch')" :src='imgsrc'/>
+			<img class='deleteImg' src='graphics/bin.png' @click="$emit('delete')" />
+			<input v-model.lazy="entry.item" v-bind:test="entry.item" maxlength="30" />
+		</li>
+	`
+};
 
-	var lp = new Vue({
-		el: '#list-part',
-		data: {
-			id: 0,
-			agitem: '',
-			addPlaceholder: 'Name item to add.',
-			gListLength: 0,
-			// groceryList: []
-			groceryList: [{id:0,item:'mlieko',done:false}]
+var lp = new Vue({
+	el: '#list-part',
+	data: {
+		id: 0,
+		agitem: '',
+		addPlaceholder: 'Name item to add.',
+		gListLength: 0,
+		listId: undefined,
+		groceryList: []
+	},
+	methods:{
+		switchState: function(entry){
+			entry.done = !entry.done;
+			this.updateSizes();
 		},
-		methods:{
-			switchState: function(entry){
-				entry.done = !entry.done;
-				this.updateSizes();
-			},
-			deleteEntry: function(entry){
-				var index = this.groceryList.indexOf(entry);
-				if( index !== -1){
-					this.groceryList.splice(index, 1);
-				}
-				this.updateSizes();
-			},
-			whichSrc: function(done){
-				if(done){
-					return 'graphics/done.png'
-				}else{
-					return 'graphics/togo.png'
-				}
-			},
-			addItemToGrocery: function(){
-				if(this.agitem === ''){
-					this.addPlaceholder = 'Write something here.';
-				}else{
-					this.groceryList.push({id: this.id, item: this.agitem, done: false});
-					this.id++;
-					this.agitem = '';
-					this.addPlaceholder = 'Name item to add.';
-					this.updateSizes();
-				}
-			},
-			updateSizes: function(){
-				this.gListLength = this.groceryList.length;
-
-				var done = 0, togo = 0;
-
-				this.groceryList.forEach(function(item){
-					if(item.done === true){
-						done++;
-					}else{
-						togo++;
-					}
-				});
-
-				rip.togo = togo;
-				rip.done = done;
-				}
+		deleteEntry: function(entry){
+			var index = this.groceryList.indexOf(entry);
+			if( index !== -1){
+				this.groceryList.splice(index, 1);
+			}
+			this.updateSizes();
 		},
-		components: {
-			'grocery-list-entry': groceryListEntry
+		whichSrc: function(done){
+			if(done){
+				return 'graphics/done.png'
+			}else{
+				return 'graphics/togo.png'
+			}
+		},
+		addItemToGrocery: function(){
+			if(this.agitem === ''){
+				this.addPlaceholder = 'Write something here.';
+			}else if(this.groceryList.length < 100){
+				this.groceryList.push({id: this.id, item: this.agitem, done: false});
+				this.id++;
+				this.agitem = '';
+				this.addPlaceholder = 'Name item to add.';
+				this.updateSizes();
+			}else{
+				this.agitem = '';
+				this.addPlaceholder = 'Too much stuff.';
+			}
+		},
+		updateSizes: function(){
+			this.gListLength = this.groceryList.length;
+			var done = 0, togo = 0;
+			this.groceryList.forEach(function(item){
+				if(item.done === true){
+					done++;
+				}else{
+					togo++;
+				}
+			});
+			rip.togo = togo;
+			rip.done = done;
+		},
+		setListId: function(response){
+			this.listId = response['Id'];
+		},
+		copyURLtoClip: function(){
+			if(typeof this.listId === "undefined")
+				window.alert("Please Create list first.");
+			else
+				window.prompt("Copy to clipboard: Ctrl+C, Enter", '/' + this.listId);
 		}
-	});
+	},
+	components: {
+		'grocery-list-entry': groceryListEntry
+	},
+	watch:{
+		groceryList : {
+			handler: function(val, oldval){
+				if(typeof this.listId === "undefined"){
+					var r = axios.post('/grocery/public/init-list', {
+						groceryList: this.groceryList
+						})
+						.then((response) => {
+							this.setListId(response.data)
+						});
+				}else{
+					axios.post('/grocery/public/update-list', {
+						listId: this.listId,
+						groceryList: this.groceryList
+					});
+				}
+			},
+			deep: true
+		}
+	}
+});
 
-	var rip = new Vue({
-		el: '#right-info-part',
-		data: {
-			togo: 0,
-			done: 0
+var rip = new Vue({
+	el: '#info-part',
+	data: {
+		togo: 0,
+		done: 0
+	},
+	methods: {
+		copyURLtoClip: function(){
+			if(typeof lp.listId === "undefined")
+				window.alert("Please Create list first.");
+			else
+				window.prompt("Copy to clipboard: Ctrl+C, Enter", '/' + lp.listId);
 		}
-	});
+	}
+});
+		// // Function to execute when list is loaded from database
+		// (function (){
+		// 	var initId = {!! ($id) !!};
+		// 	var initValue = {!! ($list) !!};
+
+		// 	if(typeof initValue !== 'undefined' && typeof initId !== 'undefined'){
+		// 		var json = JSON.parse(initValue[0].list);
+		// 		initValue = [];
+		// 		json.forEach(function(item){
+		// 			var o = {'id':item.id, 'item':item.item, 'done':item.done};
+		// 			initValue.push(o);
+		// 		});
+		// 		lp.listId = initId;
+		// 		lp.groceryList = initValue;
+		// 		lp.updateSizes();
+		// 	}
+		// })();
 </script>
 </body>
 </html>
