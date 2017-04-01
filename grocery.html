@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>BeepRoger-Grocery List</title>
 	<link href="style.css" rel="stylesheet"/>
 </head>
@@ -17,14 +18,14 @@
 	<div id='list-part'>
 
 		<ul id='list-entries' class="fDenseR">
-			<li is="grocery-list-entry" v-for="(entry, i) in groceryList" v-bind:i="i" v-bind:key="entry.id" v-bind:entry="entry" v-bind:imgsrc="whichSrc(entry.done)" v-on:switch="switchState(entry)" v-on:delete="deleteEntry(entry)"></li>
+			<li is="grocery-list-entry" v-for="(entry, i) in groceryList" :i="i" :key="entry.id" :entry="entry" :imgsrc="whichSrc(entry.done)" @switch="switchState(entry)" @delete="deleteEntry(entry)"></li>
 		</ul>
 		
 		<footer>
 			<p class="smaller fDenseR">Total items {{gListLength}}</p>
-			<button v-on:click="addItemToGrocery" id="addButton"></button>
+			<button @click="addItemToGrocery" id="addButton"></button>
 			<div class="f-right">
-				<input v-model="agitem"  v-on:keyup.enter='addItemToGrocery' maxlength="30" v-bind:placeholder="addPlaceholder">
+				<input v-model="agitem"  @keyup.enter='addItemToGrocery' maxlength="30" :placeholder="addPlaceholder">
 			</div>
 		</footer>
 
@@ -36,9 +37,9 @@
 	var groceryListEntry = 	{
 		props: ['entry', 'imgsrc'],
 		template: `
-			<li class="list-entry" v-bind:class="{checked : entry.done}">
-				<img class='checkImg' v-on:click="$emit('switch')" v-bind:src='imgsrc'/>
-				<img class='deleteImg trans' src='graphics/bin.png' v-on:click="$emit('delete')" />
+			<li class="list-entry" :class="{checked : entry.done}">
+				<img class='checkImg' @click="$emit('switch')" :src='imgsrc'/>
+				<img class='deleteImg trans' src='graphics/bin.png' @click="$emit('delete')" />
 				<p>{{entry.item}}</p>
 			</li>
 		`
@@ -51,7 +52,8 @@
 			agitem: '',
 			addPlaceholder: 'Name item to add.',
 			gListLength: 0,
-			groceryList: []
+			// groceryList: []
+			groceryList: [{id:0,item:'mlieko',done:false}]
 		},
 		methods:{
 			switchState: function(entry){
@@ -63,6 +65,7 @@
 				if( index !== -1){
 					this.groceryList.splice(index, 1);
 				}
+				this.updateSizes();
 			},
 			whichSrc: function(done){
 				if(done){
