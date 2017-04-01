@@ -26,4 +26,4 @@ Second scenario is that user have already saved list and want to load it up with
 * Third, if someone create list and delete every record list is still saved(but second point will get rid of this too).
 
 ## I know...
-Yes, guys, I'm sorry, I know it took me more time then I first estimated. To be frank It took me circa 2 days. I'm not going to make excuses It is how it is... And thanks I really felt in love Vue and Laravel, makes thing simple. Love it.
+Yes, guys, I'm sorry, I know it took me more time then I first estimated. To be frank It took me circa 2 days. I'm not going to make excuses It is how it is... And thanks I really felt in love Vue and Laravel, make things super simple. Love it.
