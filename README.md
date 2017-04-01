@@ -2,6 +2,7 @@
 
 Hey, hello Peter and Martijn, here is little implementation summary for you :)
 I decided to go with Vue('cuz you mentioned it in skype call) and of course Laravel.
+Here on github I created two not so usual branches, Master is just website with VUE implementation, that don't work completly withou server but is there for informative purposes. Second is Called Laravel and here you can find my whole Laravel Project.
 Okay first here is how it looks:
 
 ![Grocery App](/graphics/final.png)
