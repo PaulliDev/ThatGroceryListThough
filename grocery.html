@@ -2,7 +2,7 @@
 <html>
 <head>
 	<title>BeepRoger-Grocery List</title>
-	<link href="css/app.css" rel="stylesheet"/>
+	<link href="/style.css" rel="stylesheet"/>
 </head>
 <body>
 
@@ -11,8 +11,8 @@
 		<button id="shareButton" @click="copyURLtoClip"></button>
 		<div id='left-info-part' class="nFontSize"><p>Grocery list</p></div>
 		<div id='right-info-part'>
-			<div id='list-info-togo'> <p class="a-right">@{{togo}}</p> <p class="smaller">ToGo</p> </div>
-			<div id='list-info-done'> <p class="a-right">@{{done}}</p> <p class="smaller">Done</p> </div>
+			<div id='list-info-togo'> <p class="a-right">{{togo}}</p> <p class="smaller">ToGo</p> </div>
+			<div id='list-info-done'> <p class="a-right">{{done}}</p> <p class="smaller">Done</p> </div>
 		</div>
 	</div>
 	<div id='list-part'>
@@ -22,7 +22,7 @@
 		</ul>
 		
 		<footer>
-			<p class="smaller fDenseR">Total items @{{gListLength}}</p>
+			<p class="smaller fDenseR">Total items {{gListLength}}</p>
 			<button id="addButton" @click="addItemToGrocery"></button>
 			<input class="f-right" v-model="agitem"  @keyup.enter="addItemToGrocery" maxlength="30" :placeholder="addPlaceholder">
 		</footer>
