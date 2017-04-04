@@ -12,7 +12,7 @@ First here is how it looks:
 
 App goes like this:
 1. User open the main page (route '/') app loads(I didnt use Controllers, because I had only 4 routes and didn't feel the need for this small project)
-1. If user add something to the list ajax call is made (via axios) which sends data of list variable to the server, where they're encoded as json and store in simple mysql table, basically it's just ID and LIST(didn't want to overcomplicate with fk and such...), same goes when user change state or edit item in the list. I just maybe want to mention how I implemented editing of items in the list they're just input fields with vue v-model.lazy value. And on whole list vue watch set up. To keep it in sync with database if something changed.
+1. If user add something to the list ajax call is made (via axios) which sends data of list variable to the server, where they're encoded as json and store in simple mysql table, basically it's just ID and LIST(didn't want to overcomplicate with fk and such...), same goes when user change state or edit item in the list. I just maybe want to mention how I implemented editing of items in the list, they're just input fields with vue v-model.lazy value. And on a whole list is the vue watch setted up. To keep it in sync with database if something changes.
 1. If user is happy with his list he can click up right share icon to get URL to his list.
 
 Second scenario is that user have already saved list and want to load it up with url then it goes like this:
